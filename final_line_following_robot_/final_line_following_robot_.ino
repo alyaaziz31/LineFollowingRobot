@@ -92,18 +92,18 @@ void move(int motor, int speed, int direction){    //code taken from http://bild
 
 void moveRight(){
     move(1, 0, 0);
-    move(2, 40, 0);       //right motor stops whilst left motor turns clockwise
+    move(2, 60, 0);       //right motor stops whilst left motor turns clockwise
 }
 
 void moveLeft(){
-  move(1, 40, 0);
+  move(1, 60, 0);
   move(2, 0, 0);        //right motor turns clockwise whilst left motor stops
 
 }
 
 void moveForward() {
-  move(1, 40, 0);
-  move(2, 40, 0);      //both left and right motors turn clockwise
+  move(1, 60, 0);
+  move(2, 60, 0);      //both left and right motors turn clockwise
 }
 
 void moveStop() {
