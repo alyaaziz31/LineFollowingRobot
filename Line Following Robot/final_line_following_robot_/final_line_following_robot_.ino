@@ -17,7 +17,7 @@ int rightphotocellReading;
 int leftThreshold = -1;
 int rightThreshold = -1;
 
-
+//photocell test code was based off of https://learn.adafruit.com/photocells/using-a-photocell
 void setup(){
   pinMode(PWMA, OUTPUT);
   pinMode(AIN1, OUTPUT);
@@ -27,13 +27,13 @@ void setup(){
   pinMode(BIN2, OUTPUT);
   pinMode(leftphotocellPin, INPUT);
   pinMode(rightphotocellPin, INPUT);
-  pinMode(8, OUTPUT);
+  pinMode(8, OUTPUT);         //for the red LED to turn on
   Serial.begin(9600);         //for the photocell readings
 
-  delay(500);// put on white and read the white value
+  delay(500);// put both photocells on white and read white value
   //threshold is 0.8 of white value
-  leftThreshold = analogRead(leftphotocellPin)*0.75;        //xander li told me that readings of black lines are approx 80% of white readings
-  rightThreshold = analogRead(rightphotocellPin)*0.75;
+  leftThreshold = analogRead(leftphotocellPin)*0.75;        //xander li told me that threshold (black value) is approx. 0.8 of the white value
+  rightThreshold = analogRead(rightphotocellPin)*0.75;      
   delay(500);
   
 }
@@ -50,16 +50,16 @@ void loop(){
     delay(300);
     moveStop();
     Serial.println("stop");  
-    moveForward(); //if both photocells detect black, the robot stops then turns on an LED.                 
+    moveForward();              //if both photocells detect black, the robot follows moveStop then moves forward to obtain new photocell readings                
   }
   else if(rightphotocellReading < rightThreshold) {     
-    moveRight(); 
+    moveRight();                 //if right photocell detects black, turn right
   }
   else if(leftphotocellReading< leftThreshold) {
-    moveLeft(); 
+    moveLeft();                   //if left photocell detects black, turn left
   }
   else{
-    moveForward();
+    moveForward();                //robot moves forward if both photocells detect white
   }
 }
 
@@ -92,25 +92,26 @@ void move(int motor, int speed, int direction){    //code taken from http://bild
 
 void moveRight(){
     move(1, 0, 0);
-    move(2, 60, 0);    
+    move(2, 60, 0);       //right motor stops whilst left motor turns clockwise
 }
 
 void moveLeft(){
   move(1, 60, 0);
-  move(2, 0, 0);
+  move(2, 0, 0);        //right motor turns clockwise whilst left motor stops
 
 }
 
 void moveForward() {
   move(1, 60, 0);
-  move(2, 60, 0);
+  move(2, 60, 0);      //both left and right motors turn clockwise
 }
 
 void moveStop() {
   move(1, 0, 0);
   move(2, 0, 0);
-  digitalWrite(8, HIGH);
+  digitalWrite(8, HIGH);   //both left and right motors will stop, turn on the red LED, pause for 3 seconds
   delay(3000);
+  digitalWrite(8, LOW);
  
 }
 
